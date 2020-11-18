@@ -7,6 +7,6 @@ public interface CurrencyApi {
 
 //    taken from https://exchangeratesapi.io/
 
-    @GET("latest?base=RUB")
+    @GET("latest?base=USD")
     Call<Currency> loadRubRates();
 }

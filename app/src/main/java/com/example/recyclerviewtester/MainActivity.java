@@ -2,17 +2,16 @@ package com.example.recyclerviewtester;
 
 
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.util.Pair;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,18 +19,16 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ArrayAdapter<String> adapter;
+    private CustomAdapter adapter;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ListView listView = (ListView) findViewById(R.id.list_view);
+        initRecyclerView();
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
 
-        adapter = new ArrayAdapter<>(this, R.layout.list_xml, R.id.oyaebu);
-        listView.setAdapter(adapter);
-
-//        updateList(generateStrings());
         NetworkService.getInstance()
                 .currencyApi()
                 .loadRubRates()
@@ -53,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
 //                                .stream()
 //                                .map(pair -> pair.first + " " + pair.second)
 //                                .collect(Collectors.toList());
-                        updateList(rates);
+                        adapter.updateStrings(rates);
                     }
 
                     @Override
@@ -63,15 +60,11 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
-    private void updateList(List<String> content) {
-        adapter.clear();
-        adapter.addAll(content);
-    }
 
-    private List<String> generateStrings() {
-        return Arrays.asList("sdfsdfsdf", "fsdfsdfs", "sdfsdfsdf", "cvcvcvcv", "cfsfcvcxv",
-                "sdfsdfsdf", "fsdfsdfs", "sdfsdfsdf", "cvcvcvcv", "cfsfcvcxv", "sdfsdfsdf",
-                "fsdfsdfs", "sdfsdfsdf", "cvcvcvcv", "cfsfcvcxv"
-        );
+    private void initRecyclerView() {
+        recyclerView = findViewById(R.id.recycler_view);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new CustomAdapter();
+        recyclerView.setAdapter(adapter);
     }
 }

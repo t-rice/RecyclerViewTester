@@ -31,7 +31,8 @@ public class Currency {
     public List<Pair<String, String>> getRatesPair() {
         return Arrays.asList(
                 Pair.create("USD", rates.getUsdValue()),
-                Pair.create("EUR", rates.getEurValue())
+                Pair.create("EUR", rates.getEurValue()),
+                Pair.create("RUB", rates.getRubValue())
         );
     }
 
@@ -41,6 +42,8 @@ public class Currency {
         private String usdValue;
         @SerializedName("EUR")
         private String eurValue;
+        @SerializedName("RUB")
+        private String rubValue;
 
         public String getUsdValue() {
             return usdValue;
@@ -48,6 +51,10 @@ public class Currency {
 
         public String getEurValue() {
             return eurValue;
+        }
+
+        public String getRubValue() {
+            return rubValue;
         }
     }
 }
